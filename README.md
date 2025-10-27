@@ -80,6 +80,7 @@ pwsh -File scripts/setup-mcp.ps1 `
 - `-InstallDependencies`：执行 `npm install`，确保 `tsx` 等依赖可用。
 - `-Persist`：通过 `setx` 写入用户级环境变量，并生成 `.env.mcp`。
 - `-ConfigureClients`：检测 `claude` / `codex` CLI，自动注册 `dsocr` MCP 服务（未安装时给出提示）。
+- 运行时脚本会生成/使用 `scripts/start-mcp-server.cmd` 作为启动入口，客户端触发时自动调用，无需手工执行 `npm run start ...`。
 - `-StartServer`：新开 PowerShell 窗口运行 `npm run start --workspace @dsocr/mcp-server`。
 - `-WorkerUrl`、`-TimeoutMs`：自定义 MCP 连接的 Worker 地址与超时时长。
 

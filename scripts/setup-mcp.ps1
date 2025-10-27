@@ -48,7 +48,18 @@ if ($Persist) {
 
 if ($ConfigureClients) {
   Write-Host "`n[3/4] Configuring MCP clients..." -ForegroundColor Yellow
-  $command = "npm run start --workspace @dsocr/mcp-server"
+  $launcher = Join-Path $repoRoot "scripts/start-mcp-server.cmd"
+
+  if (-not (Test-Path $launcher)) {
+    Write-Host "  Generating helper launcher: $(Resolve-Path $launcher)" -ForegroundColor Green
+    @"
+@echo off
+setlocal
+cd /d "%~dp0.."
+npm run start --workspace @dsocr/mcp-server
+endlocal
+"@ | Set-Content -Encoding ASCII $launcher
+  }
 
   if (Get-Command claude -ErrorAction SilentlyContinue) {
     Write-Host "  Configuring Claude CLI..." -ForegroundColor Green
@@ -56,7 +67,7 @@ if ($ConfigureClients) {
       & claude mcp remove dsocr --force | Out-Null
     } catch {
     }
-    & claude mcp add dsocr --stdio -- $command
+    & claude mcp add dsocr --transport stdio -- $launcher
   } else {
     Write-Warning "Claude CLI (command 'claude') not found. Install it from https://docs.claude.ai/cli and re-run with -ConfigureClients."
   }
@@ -67,7 +78,7 @@ if ($ConfigureClients) {
       & codex mcp remove dsocr | Out-Null
     } catch {
     }
-    & codex mcp add dsocr -- npm run start --workspace @dsocr/mcp-server
+    & codex mcp add dsocr $launcher
   } else {
     Write-Warning "Codex CLI (command 'codex') not found. Ensure it is installed and accessible, then rerun with -ConfigureClients."
   }
