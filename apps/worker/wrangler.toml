@@ -1,0 +1,6 @@
+name = "dsocr-worker"
+main = "src/index.ts"
+compatibility_date = "2024-05-23"
+account_id = "4c1d8aa164a8e9f8a174a9e89fd3bffe"
+
+workers_dev = true

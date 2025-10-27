@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": [
+      "@cloudflare/workers-types"
+    ],
+    "moduleResolution": "Bundler",
+    "module": "ESNext"
+  },
+  "include": [
+    "src",
+    "vitest.config.ts"
+  ]
+}
