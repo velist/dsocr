@@ -11,7 +11,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$repoRoot = (Resolve-Path "$PSScriptRoot/..").Path
+$repoRoot = (Resolve-Path "$PSScriptRoot/.." ).Path
 
 Write-Host "=== DS OCR MCP setup ===" -ForegroundColor Cyan
 Write-Host "Repository path: $repoRoot"
@@ -53,11 +53,10 @@ if ($ConfigureClients) {
   if (Get-Command claude -ErrorAction SilentlyContinue) {
     Write-Host "  Configuring Claude CLI..." -ForegroundColor Green
     try {
-      & claude mcp remove dsocr -y | Out-Null
+      & claude mcp remove dsocr --force | Out-Null
     } catch {
-      # ignore
     }
-    & claude mcp add dsocr --transport stdio --command $command --cwd $repoRoot
+    & claude mcp add dsocr --stdio -- $command
   } else {
     Write-Warning "Claude CLI (command 'claude') not found. Install it from https://docs.claude.ai/cli and re-run with -ConfigureClients."
   }
@@ -68,7 +67,7 @@ if ($ConfigureClients) {
       & codex mcp remove dsocr | Out-Null
     } catch {
     }
-    & codex mcp add dsocr --transport stdio --command $command --cwd $repoRoot
+    & codex mcp add dsocr -- npm run start --workspace @dsocr/mcp-server
   } else {
     Write-Warning "Codex CLI (command 'codex') not found. Ensure it is installed and accessible, then rerun with -ConfigureClients."
   }
