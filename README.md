@@ -2,6 +2,7 @@
 
 面向 DeepSeek-OCR 的一体化方案：
 
+- GitHub 仓库：<https://github.com/velist/dsocr>
 - **Cloudflare Worker**：统一接收 OCR 请求，整理图片输入、提示词与输出格式，转发至硅基流动 `deepseek-ai/DeepSeek-OCR` 模型，并返回纯文本 / Markdown / 布局信息等多种结果。
 - **MCP Server**：基于 Model Context Protocol 的工具服务，可在 Claude Code、Codex CLI 等支持 MCP 的客户端中直接调用该 OCR 能力。
 - **Shared 模块**：共享输出格式、提示词等定义，保证 Worker 与 MCP 行为一致。
