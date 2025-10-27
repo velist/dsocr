@@ -58,6 +58,31 @@ npm run test --workspace @dsocr/worker
 npm run test --workspace @dsocr/mcp-server
 ```
 
+### 一键脚本（Windows PowerShell）
+
+仓库提供 `scripts/setup-mcp.ps1` 简化配置：
+
+```powershell
+# 仅设置当前会话变量
+pwsh -File scripts/setup-mcp.ps1
+
+# 持久化变量并自动安装依赖、配置 CLI、启动 MCP
+pwsh -File scripts/setup-mcp.ps1 `
+  -Persist `
+  -InstallDependencies `
+  -ConfigureClients `
+  -StartServer `
+  -WorkerUrl "https://dsocr-worker.vee5208.workers.dev/ocr" `
+  -TimeoutMs 120000
+```
+
+参数说明：
+- `-InstallDependencies`：执行 `npm install`，确保 `tsx` 等依赖可用。
+- `-Persist`：通过 `setx` 写入用户级环境变量，并生成 `.env.mcp`。
+- `-ConfigureClients`：检测 `claude` / `codex` CLI，自动注册 `dsocr` MCP 服务（未安装时给出提示）。
+- `-StartServer`：新开 PowerShell 窗口运行 `npm run start --workspace @dsocr/mcp-server`。
+- `-WorkerUrl`、`-TimeoutMs`：自定义 MCP 连接的 Worker 地址与超时时长。
+
 ## 目录结构
 
 ```
